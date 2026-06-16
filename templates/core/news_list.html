@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Berita — {{ config.school_name|default:"SMKN 5 Kota Tangerang" }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  #navbar { background: #1a3b6e !important; }
+  #navbar .nav-link { color: white !important; }
+  #navbar .nav-brand { color: white !important; }
+  #navbar .nav-brand-sub { color: rgba(255,255,255,0.6) !important; }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page header -->
+<div style="background: linear-gradient(135deg, #071e3d 0%, #1a3b6e 100%)" class="pt-32 pb-16 text-white text-center">
+  <p class="text-amber-400 font-semibold text-xs uppercase tracking-widest mb-2">Informasi &amp; Kegiatan</p>
+  <h1 class="text-4xl font-bold">Berita Terbaru</h1>
+  <p class="text-white/50 text-sm mt-3">Ikuti perkembangan terkini SMKN 5 Kota Tangerang</p>
+</div>
+
+<section class="bg-gray-50 py-20 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for n in news_list %}
+      <article class="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+        {% if n.image %}
+        <div class="overflow-hidden h-52">
+          <img src="{{ n.image.url }}" alt="{{ n.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        {% else %}
+        <div class="h-52 flex items-center justify-center" style="background:linear-gradient(135deg,#1a3b6e,#2455a4)">
+          <svg class="w-16 h-16 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+        </div>
+        {% endif %}
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span class="text-gray-400 text-xs">{{ n.created_at|date:"d F Y" }}</span>
+          </div>
+          <h2 class="font-bold text-gray-800 leading-snug mb-3 group-hover:text-primary transition-colors">{{ n.title }}</h2>
+          <p class="text-gray-500 text-sm leading-relaxed flex-1">{{ n.get_excerpt }}</p>
+          <a href="{% url 'news_detail' n.slug %}" class="mt-5 inline-flex items-center gap-1.5 text-primary font-semibold text-sm hover:text-amber-500 transition-colors">
+            Baca Selengkapnya
+            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
+      </article>
+      {% empty %}
+      <div class="col-span-full text-center py-20 text-gray-400">
+        <svg class="w-16 h-16 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+        <p class="text-sm font-medium">Belum ada berita tersedia.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
